@@ -2,11 +2,12 @@ class ParentsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   def index
-    @parents = Parent.all
+    @parents = Teacher.find(session[:teacher_id]).parents
+    @teacher = Teacher.find(session[:teacher_id])
   end
 
-  def show
-  end
+  # def show
+  # end
 
   def new
     @parent = Parent.new

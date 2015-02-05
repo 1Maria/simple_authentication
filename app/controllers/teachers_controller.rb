@@ -1,12 +1,13 @@
 class TeachersController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_teacher, only: [:show, :edit, :update, :destroy]
 
   def index
     @teachers = Teacher.all
   end
 
-  def show
-  end
+  # def show
+  #   @teacher = Teacher.find(params[:id])
+  # end
 
   def new
     @teacher = Teacher.new
@@ -18,7 +19,8 @@ class TeachersController < ApplicationController
   def create
     @teacher = Teacher.new(teacher_params)
     if @teacher.save
-      redirect_to @teacher, notice: 'Teacher was successfully created.'
+      flash[:success] = "Welcome to your Parent Roster!"
+      redirect_to teachers_path, notice: 'Teacher was successfully created.'
     else
       render :new
     end
@@ -26,7 +28,7 @@ class TeachersController < ApplicationController
 
   def update
     if @teacher.update(teacher_params)
-      redirect_to @teacher, notice: 'Teacher was successfully updated.'
+      redirect_to teachers_path, notice: 'Teacher was successfully updated.'
     else
       render :edit
     end
@@ -34,7 +36,7 @@ class TeachersController < ApplicationController
 
   def destroy
     @teacher.destroy
-    redirect to teachers_url, notice: 'Teacher was successfully destroyed.'
+    redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
   end
 
   private
@@ -44,5 +46,10 @@ class TeachersController < ApplicationController
 
   def teacher_params
     params.require(:teacher).permit(:email, :name, :password_digest )
+  end
+
+  def make_session(teacher)
+    session[:teacher_id] = teacher.id
+    session[:name] = "Jane Doe"
   end
 end
